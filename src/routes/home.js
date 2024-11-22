@@ -1,5 +1,5 @@
 import express from "express";
-import { defaultLanguage, loadLanguage } from "./language.js";
+import { defaultLanguage, loadLanguage } from "../languages/langLoader.js";
 
 const home = express.Router();
 

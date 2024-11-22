@@ -1,6 +1,6 @@
-﻿import spanish from '../languages/es-ES.js'
-import catalan from '../languages/es-CA.js'
-import english from '../languages/en-EU.js'
+﻿import spanish from './es-ES.js'
+import catalan from './es-CA.js'
+import english from './en-EU.js'
 
 const defaultLanguage = 'en-EU';
 
