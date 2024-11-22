@@ -1,0 +1,19 @@
+{
+  "name": "cache-representator",
+  "version": "1.0.0",
+  "author": "Brouse_13",
+  "license": "ISC",
+  "description": "Cache level representation",
+  "dependencies": {
+    "express": "^4.21.1",
+    "dotenv": "^16.4.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "scripts": {
+    "start": "node -json-modules ./bin/www.js",
+    "dev": "nodemon -q ./bin/www.js"
+  }
+}

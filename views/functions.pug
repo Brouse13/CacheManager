@@ -1,0 +1,8 @@
+﻿mixin tableElements()
+    - for (let i = 0; i < memory_content.length; i++)
+        - let content = memory_content[i]
+        tr.text-center
+            td= content["rw"]
+            td= content["addr"]
+            td= content["val"]
+            td= content["hit"]
