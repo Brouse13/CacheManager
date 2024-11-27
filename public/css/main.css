@@ -23,6 +23,8 @@ body {
 .caches-container {
     background-color: rebeccapurple;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .memory-container {
