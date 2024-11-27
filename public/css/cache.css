@@ -1,0 +1,11 @@
+﻿.cache-view {
+    margin-top: 10px;
+    min-height: 85%;
+    background-color: red;
+}
+
+.cache-menu {
+    margin-top: 10px;
+    background-color: blue;
+    min-height: 100%;
+}
