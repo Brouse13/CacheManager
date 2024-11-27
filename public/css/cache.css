@@ -12,16 +12,37 @@
     background-color: blue;
     height: 10%;
     display: flex;
+    flex-direction: column;
+}
+
+.cache-controls {
+    display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.cache-menu .item {
+.cache-progress {
+    background-color: blue;
+    width: 80%;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.cache-controls .item {
     padding: 10px;
     align-content: center;
 }
 
-.cache-menu .item button {
+.cache-controls .item button {
     background-color: transparent;
     border: none;
+}
+
+.cache-progress {
+    margin-bottom: 10px;
+}
+
+.cache-progress .progress {
+    height: 10px;
+    border-radius: 20px;
 }
