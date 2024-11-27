@@ -1,0 +1,37 @@
+﻿.title-container
+    h2 Memory Access
+    table.table
+        thead.text-center
+            th(scope=col) R/W
+            th(scope=col) Mem. Address
+            th(scope=col) Value
+            th(scope=col) Hit / Miss
+.scrollable-table
+    table.table
+        tbody
+            +tableElements()
+.row
+    button.button.col b1
+    button.button.col b2
+.container.mt-3.stats.d-flex.flex-column.justify-content-center
+    h3.text-center Stats
+    .row
+        .col-sm-2.fw-bold Hits
+        .col 10
+        .col-sm-2.fw-bold Hits
+        .col 10
+    .row
+        .col-sm-2.fw-bold Misses
+        .col 10
+        .col-sm-2.fw-bold Misses
+        .col 10
+    .row
+        .col-sm-2.fw-bold Ratio
+        .col 100%
+        .col-sm-2.fw-bold Ratio
+        .col 100%
+    .row
+        .col-sm-2.fw-bold Ratio
+        .col 100%
+        .col-sm-2.fw-bold Ratio
+        .col 100%
