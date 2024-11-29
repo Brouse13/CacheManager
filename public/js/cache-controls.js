@@ -12,4 +12,9 @@
         $('#modalTitle').text("Change " + value);
         $('#labelModalForm').text(value);
     })
+
+    $('#saveFormButton').click(function () {
+        let value = $('#modalInput').val();
+        if (value) $('#modalForm').submit();
+    })
 });
