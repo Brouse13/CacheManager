@@ -6,11 +6,11 @@
     });
 
     $('.openmodal').click(function () {
-        console.log($(this));
         let value = $(this).attr('modal-data');
 
         $('#modalTitle').text("Change " + value);
         $('#labelModalForm').text(value);
+        $('#modalType').val(value);
     })
 
     $('#saveFormButton').click(function () {

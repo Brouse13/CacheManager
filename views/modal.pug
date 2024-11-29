@@ -7,7 +7,8 @@
             .modal-body
                 form(id="modalForm", method="post", action="/form")
                     .mt-3
+                        input(id="modalType", type="hidden", name="modalType", value="")
                         label(for="modalInput", id="labelModalForm") Cache Number
-                        input.form-control(type="number", id="modalInput", name="modalInput")
+                        input.form-control(type="number", id="modalInput", name="modalInput" required)
             .modal-footer
-                button.btn.btn-primary(type="button", id="saveFormButton" required) Save
+                button.btn.btn-primary(type="submit", id="saveFormButton") Save

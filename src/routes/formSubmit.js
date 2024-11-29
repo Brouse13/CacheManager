@@ -6,8 +6,9 @@ const form = express.Router();
  * Load th home page on the router, and render the pug file.
  */
 form.post('/form', (req , res ) =>{
-    const { modalInput } = req.body;
+    const { modalInput, modalType } = req.body;
     console.log(modalInput);
+    console.log(modalType);
     res.redirect('/')
 })
 
