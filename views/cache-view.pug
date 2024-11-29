@@ -1,20 +1,25 @@
-﻿form.cache-options
+﻿mixin openmodal(name)
+    button.openmodal.dropdown-item(type="button", data-bs-toggle="modal",
+        data-bs-target="#changeVars", modal-data=name)= name
+
+form.cache-options
     .dropdown
         button.btn.dropdown-toggle(type="button", id="memoryOptions",
             data-bs-toggle="dropdown", aria-expanded="false") Memory Options
         .dropdown-menu(aria-labelledby="memoryOptions")
             a.dropdown-item(href="#") Memory Size
-            a.dropdown-item(href="#") Memory Start Address
+            +openmodal("Memory Start Address")
 
     .dropdown.dropdown-hover
         button.btn.dropdown-toggle(type="button", id="cacheOptions",
             data-bs-toggle="dropdown", aria-expanded="false") Cache Options
         .dropdown-menu(aria-labelledby="cacheOptions")
-            a.dropdown-item(href="#") Cache number
-            a.dropdown-item(href="#") Dirty bit
-            a.dropdown-item(href="#") Valid bit
-            a.dropdown-item(href="#") Replacement policy
-            a.dropdown-item(href="#") Associativity
+            +openmodal("Cache number")
+            +openmodal("Cache size")
+            +openmodal("Dirty bit")
+            +openmodal("Valid bit")
+            +openmodal("Replacement Policy")
+            +openmodal("Change Variable Settings")
 
 .cache-view
     .col-md

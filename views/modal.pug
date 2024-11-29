@@ -1,0 +1,13 @@
+﻿.modal.fade(tabindex="-1", id="changeVars", aria-labelledby="modalTitle", aria-hidden="true")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                h5.modal-title(id="modalTitle") Change Variable Settings
+                button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            .modal-body
+                form(id="modalForm")
+                    .mt-3
+                        label(for="modalInput", id="labelModalForm") Cache Number
+                        input.form-control(type="number", id="modalInput", name="cacheNumber")
+            .modal-footer
+                button.btn.btn-primary(type="button") Save
