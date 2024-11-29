@@ -1,11 +1,28 @@
 ﻿.cache-options {
     background-color: lime;
-    height: 20%;
+    display: flex;
+    flex-direction: row;
+}
+
+.cache-options > div {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
 }
 
 .cache-view {
     height: 100%;
     background-color: red;
+    display: flex;
+    flex-direction: row;
+}
+
+.cache-view > div:nth-child(odd) {
+    background-color: rebeccapurple;
+}
+
+.cache-view > div:nth-child(even) {
+    background-color: tomato;
 }
 
 .cache-menu {
