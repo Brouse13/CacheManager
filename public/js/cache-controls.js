@@ -1,10 +1,4 @@
 ﻿$(document).ready(function () {
-    $('#playpause').click(function () {
-        $(this).find('.fa-play, .fa-pause')
-            .toggleClass('fa-play')
-            .toggleClass('fa-pause');
-    });
-
     $('.openmodal').click(function () {
         let value = $(this).attr('modal-data');
 

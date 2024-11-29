@@ -3,13 +3,12 @@
     table.table
         thead.text-center
             th(scope=col) R/W
-            th(scope=col) Mem. Address
+            th(scope=col) Address
             th(scope=col) Value
             th(scope=col) Hit / Miss
 .scrollable-table
-    table.table
+    table.table(id="memoryAccess")
         tbody
-            +tableElements()
 .container.mt-3.stats.d-flex.flex-column.justify-content-center
     h3.text-center Stats
     .row
