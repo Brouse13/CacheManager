@@ -16,6 +16,6 @@ function updateProgressBar(index, length) {
 function selectMemoryAccess(select, unselect) {
     let access = $('#memoryAccess').find('tbody');
 
-    access.find(`tr:nth-child(${select})`).addClass('table-success');
-    access.find(`tr:nth-child(${unselect})`).removeClass('table-success');
+    access.find(`tr:nth-child(${unselect})`).addClass('table-success');
+    access.find(`tr:nth-child(${select})`).removeClass('table-success');
 }
