@@ -15,7 +15,7 @@ function previousStep() {
     if (currentMemoryAccess <= 0) return;
 
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess - 1);
-    updateProgressBar(currentMemoryAccess--, memoryAccessArr.length);
+    updateProgressBar(--currentMemoryAccess, memoryAccessArr.length);
 }
 function playPause() {
     // Change the icon from play to pause and vice versa
@@ -30,7 +30,7 @@ function nextStep() {
 
     // Update the progress bar
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
-    updateProgressBar(currentMemoryAccess++, memoryAccessArr.length);
+    updateProgressBar(++currentMemoryAccess, memoryAccessArr.length);
 }
 
 function __initMemoryAccess() {
