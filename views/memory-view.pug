@@ -1,14 +1,13 @@
 ﻿.title-container
-    h2 Memory Access
-    table.table
-        thead.text-center
-            th(scope=col) R/W
-            th(scope=col) Address
-            th(scope=col) Value
-            th(scope=col) Hit / Miss
-.scrollable-table
-    table.table(id="memoryAccess")
-        tbody
+    h2.text-center Memory Access
+    .scrollable-table(style="height: 75%")
+        table.table#memoryAccess
+            thead.text-center
+                th(scope=col) R/W
+                th(scope=col) Address
+                th(scope=col) Value
+                th(scope=col) Hit / Miss
+            tbody
 .container.mt-3.stats.d-flex.flex-column.justify-content-center
     h3.text-center Stats
     .row

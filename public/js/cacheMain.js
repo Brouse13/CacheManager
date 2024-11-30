@@ -14,9 +14,6 @@ function previousStep() {
     // Avoid going under the memory accesses
     if (currentMemoryAccess <= 0) return;
 
-    // Update the progress bar
-    let memory = $('#memoryAccess');
-
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess - 1);
     updateProgressBar(currentMemoryAccess--, memoryAccessArr.length);
 }
@@ -54,4 +51,5 @@ $(document).ready(function () {
     // Reset the progress bar
     __initMemoryAccess();
     updateProgressBar(currentMemoryAccess, memoryAccessArr.length);
+    __initMemory();
 });

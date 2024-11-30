@@ -11,7 +11,7 @@
 }
 
 .cache-view {
-    height: 100%;
+    height: 85%;
     background-color: red;
     display: flex;
     flex-direction: row;

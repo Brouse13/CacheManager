@@ -50,13 +50,17 @@ form.cache-options
                     th(scope="col") Dirty
                     th(scope="col") Tag
                     th(scope="col") Dirty
-    .col-md
-        h2.text-center Memory
-        table.table.p-2.text-center
-            thead
-                tr
-                    th(scope="col") Address
-                    th(scope="col") Value
+    .col-md.memory-container.overflow-hidden
+        .title-container
+            h2.text-center Memory
+        .table-container
+            .scrollable-table
+                table.table(id="memory-table")
+                    thead.text-center
+                        tr
+                            th(scope="col") Address
+                            th(scope="col") Value
+                    tbody
 .cache-menu
     .cache-controls
         .item
