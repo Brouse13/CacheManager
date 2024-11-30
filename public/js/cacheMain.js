@@ -7,7 +7,7 @@
     associativity: 'DIRECT_MAPPED'
 }
 
-let memoryAccess = [1, 2, 3, 4, 5]
+let memoryAccessArr = []
 let currentMemoryAccess = 0;
 
 function previousStep() {
@@ -17,10 +17,8 @@ function previousStep() {
     // Update the progress bar
     let memory = $('#memoryAccess');
 
-    memory.find(`tbody tr:nth-child(${currentMemoryAccess})`).removeClass('table-success');
-    currentMemoryAccess--;
-    __updateProgress()
-    memory.find(`tbody tr:nth-child(${currentMemoryAccess})`).addClass('table-success');
+    selectMemoryAccess(currentMemoryAccess, currentMemoryAccess - 1);
+    updateProgressBar(currentMemoryAccess--, memoryAccessArr.length);
 }
 function playPause() {
     // Change the icon from play to pause and vice versa
@@ -31,39 +29,19 @@ function playPause() {
 
 function nextStep() {
     // Avoid going over the memory accesses
-    if (currentMemoryAccess >= memoryAccess.length) return;
+    if (currentMemoryAccess >= memoryAccessArr.length) return;
 
     // Update the progress bar
-    let memory = $('#memoryAccess');
-    memory.find(`tbody tr:nth-child(${currentMemoryAccess})`).removeClass('table-success');
-    currentMemoryAccess++;
-    __updateProgress();
-    memory.find(`tbody tr:nth-child(${currentMemoryAccess})`).addClass('table-success');
-}
-
-function __updateProgress() {
-    let progress = currentMemoryAccess / memoryAccess.length * 100;
-    $('#progress-bar').text(progress + '%').css('width', progress + '%');
+    selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
+    updateProgressBar(currentMemoryAccess++, memoryAccessArr.length);
 }
 
 function __initMemoryAccess() {
-    let data = {
-        rw: 'R',
-        address: 1,
-        value: 0,
-        hit: false,
-    }
+    let data = { rw: 'R', address: 1, value: 0, hit: false }
 
-    let table = $('#memoryAccess').find('tbody');
-
-    for (let i = 0; i < 20; i++) {
-        memoryAccess.push(data);
-        table.append(`<tr class="text-center">
-                    <td>${data.rw}</td>
-                    <td>${"0x" + ("0000" + data.address.toString(16)).slice(-4)}</td>
-                    <td>${data.value}</td>
-                    <td>-</td>
-                   </tr>`);
+    for (let i = 0; i < 30; i++) {
+        memoryAccessArr.push(data);
+        memoryAccessRender(data);
     }
 }
 
@@ -74,6 +52,6 @@ $(document).ready(function () {
     $('#next').click(nextStep);
 
     // Reset the progress bar
-    __updateProgress();
     __initMemoryAccess();
+    updateProgressBar(currentMemoryAccess, memoryAccessArr.length);
 });
