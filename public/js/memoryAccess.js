@@ -1,13 +1,4 @@
-﻿let cacheOptions = {
-    cacheNumber: 2,
-    dirty: false,
-    validBit: false,
-    cacheSize: 16,
-    replacementPolicy: 'LRU',
-    associativity: 'DIRECT_MAPPED'
-}
-
-let memoryAccessArr = []
+﻿let memoryAccessArr = []
 let currentMemoryAccess = 0;
 
 function previousStep() {
@@ -52,4 +43,5 @@ $(document).ready(function () {
     __initMemoryAccess();
     updateProgressBar(currentMemoryAccess, memoryAccessArr.length);
     __initMemory();
+    __initCache();
 });

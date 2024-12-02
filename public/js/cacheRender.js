@@ -13,6 +13,22 @@ function updateProgressBar(index, length) {
     $('#progress-bar').text(progressValue + '%').css('width', progressValue + '%');
 }
 
+function cacheRender(index, options) {
+    let cache = $("#cache" + index);
+    let size = Math.pow(2, options.indexBits);
+    console.log(size, cache);
+
+
+    for (let i = 0; i < size; i++) {
+        cache.append(`<tr class="text-center">
+                        <td>F</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                      </tr>`);
+    }
+}
+
 function selectMemoryAccess(select, unselect) {
     let access = $('#memoryAccess').find('tbody');
 
