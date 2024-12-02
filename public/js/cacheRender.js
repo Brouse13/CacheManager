@@ -14,19 +14,39 @@ function updateProgressBar(index, length) {
 }
 
 function cacheRender(index, options) {
-    let cache = $("#cache" + index);
+    let cache = $(`#cache${index} table`);
     let size = Math.pow(2, options.indexBits);
-    console.log(size, cache);
-
 
     for (let i = 0; i < size; i++) {
         cache.append(`<tr class="text-center">
                         <td>F</td>
                         <td>-</td>
                         <td>-</td>
-                        <td>-</td>
                       </tr>`);
     }
+}
+
+function cacheItemRender(cache, index, tag) {
+    let container = $(`#cache${cache}`);
+    let table = container.find('table')
+    let row = table.find(`tbody tr:nth-child(${index})`);
+
+
+    row.find('td:nth-child(1)').text("V");
+    row.find('td:nth-child(2)').text("F");
+    row.find('td:nth-child(3)').text(tag);
+
+    row.addClass('table-success');
+
+    const offsetTop = 38 * (index - 1);
+
+    console.log(offsetTop);
+
+    // Smooth scroll to the highlighted row
+    container.animate({ scrollTop: offsetTop }, 500);
+
+    // Remove the highlight after a short delay
+    setTimeout(() => { row.removeClass('table-success'); }, 1000);
 }
 
 function selectMemoryAccess(select, unselect) {

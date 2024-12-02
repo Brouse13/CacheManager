@@ -22,34 +22,43 @@ form.cache-options
             +openmodal("Change Variable Settings")
 
 .cache-view
-    .col-md
-        h2.text-center Cache L1
-        table.table.p-2.text-center#cache1
-            thead
-                tr
-                    th(scope="col") Valid
-                    th(scope="col") Dirty
-                    th(scope="col") Tag
-                    th(scope="col") Dirty
+    .col-md.memory-container.overflow-hidden
+        .title-container
+            h2.text-center Cache L1
+        .table-container
+            .scrollable-table#cache1
+                table.table
+                    thead.text-center
+                        tr
+                            th(scope="col") Valid
+                            th(scope="col") Dirty
+                            th(scope="col") Tag
+                    tbody
 
-    .col-md
-        h2.text-center Cache L2
-        table.table.p-2.text-center#cache2
-            thead
-                tr
-                    th(scope="col") Valid
-                    th(scope="col") Dirty
-                    th(scope="col") Tag
-                    th(scope="col") Dirty
-    .col-md
-        h2.text-center Cache L3
-        table.table.p-2.text-center#cache3
-            thead
-                tr
-                    th(scope="col") Valid
-                    th(scope="col") Dirty
-                    th(scope="col") Tag
-                    th(scope="col") Dirty
+    .col-md.memory-container.overflow-hidden
+        .title-container
+            h2.text-center Cache L2
+        .table-container
+            .scrollable-table#cache2
+                table.table
+                    thead.text-center
+                        tr
+                            th(scope="col") Valid
+                            th(scope="col") Dirty
+                            th(scope="col") Tag
+                    tbody
+    .col-md.memory-container.overflow-hidden
+        .title-container
+            h2.text-center Cache L3
+        .table-container
+            .scrollable-table#cache3
+                table.table
+                    thead.text-center
+                        tr
+                            th(scope="col") Valid
+                            th(scope="col") Dirty
+                            th(scope="col") Tag
+                    tbody
     .col-md.memory-container.overflow-hidden
         .title-container
             h2.text-center Memory
