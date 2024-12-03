@@ -8,7 +8,5 @@
 
 function renderHit(index, hit) {
     let memoryAccess = $(`#memoryAccess tbody tr:nth-child(${index + 1})`);
-
-    console.log(memoryAccess)
     memoryAccess.find('td:nth-child(4)').text(!hit.hit ? 'Miss' : `Hit - ${hit.num + 1}`);
 }
