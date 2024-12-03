@@ -20,9 +20,13 @@ function nextStep() {
     if (currentMemoryAccess >= memoryAccessArr.length) return;
 
     let memAcc = memoryAccessArr[currentMemoryAccess];
-    if (memAcc.rw === 'R') readFromCache(memAcc.address);
+    if (memAcc.rw === 'R') {
+        let { hit, num } = readFromCache(memAcc.address);
+        renderHit(currentMemoryAccess, { hit, num });
+    }
 
     // Update the progress bar
+
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
     updateProgressBar(++currentMemoryAccess, memoryAccessArr.length);
 }

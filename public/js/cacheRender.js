@@ -27,7 +27,6 @@ function cacheRender(index, options) {
 }
 
 function cacheItemRender(cache, index, tag, classToAdd) {
-    console.log(cache, index, tag);
     let container = $(`#cache${cache}`);
     let table = container.find('table')
     let row = table.find(`tbody tr:nth-child(${index + 1})`);
@@ -39,8 +38,6 @@ function cacheItemRender(cache, index, tag, classToAdd) {
     row.addClass(classToAdd);
 
     const offsetTop = 38 * (index - 1);
-
-    console.log(offsetTop);
 
     // Smooth scroll to the highlighted row
     container.animate({ scrollTop: offsetTop }, 500);

@@ -47,7 +47,7 @@ function readFromCache(address) {
 
     // Write the data to all the caches that haven't got the data
     writeBackToFront(cacheIndex-1, address, data);
-    return data;
+    return { data, hit: cacheIndex < cacheOptions.cacheNumber, num: cacheIndex };
 }
 
 function writeBackToFront(cacheIndex, address, data) {
