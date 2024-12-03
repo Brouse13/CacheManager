@@ -27,10 +27,14 @@ function cacheRender(index, options) {
 }
 
 function cacheItemRender(cache, index, tag) {
+    console.log(cache, index, tag);
     let container = $(`#cache${cache}`);
     let table = container.find('table')
-    let row = table.find(`tbody tr:nth-child(${index})`);
+    let row = table.find(`tbody tr:nth-child(${index + 1})`);
 
+    console.log(container)
+    console.log(table)
+    console.log(row)
 
     row.find('td:nth-child(1)').text("V");
     row.find('td:nth-child(2)').text("F");

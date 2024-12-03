@@ -24,7 +24,6 @@ function __initCache() {
 
 function readFromCache(address) {
     let { tag, index } = calculateTagIndex(address);
-    console.log(tag, index);
     let cacheIndex, data
 
     // Search on all the caches for the data
@@ -50,17 +49,15 @@ function readFromCache(address) {
     return data;
 }
 
-async function writeBackToFront(cacheIndex, address, data) {
+function writeBackToFront(cacheIndex, address, data) {
     let {tag, index} = calculateTagIndex(address);
     let indexValue = parseInt(index, 2);
-
-    console.log(tag, index, cacheIndex);
 
     for (let i = cacheIndex; i >= 0; i--) {
         let cache = caches[i];
         cache[index] = {tag, data};
         cacheItemRender(i + 1, indexValue, tag);
-        await new Promise(r => setTimeout(r, 1));
+        new Promise(r => setTimeout(r, 1));
     }
 }
 
