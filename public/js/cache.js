@@ -3,7 +3,7 @@
     dirty: false,
     validBit: false,
     indexBits: 6,
-    offsetBits: 4,
+    offsetBits: 5,
     replacementPolicy: 'LRU',
     associativity: 'DIRECT_MAPPED'
 }
@@ -33,7 +33,7 @@ function readFromCache(address) {
         // If the cache has the index, and the tag matches, return the data
         if (cache[index] && cache[index].tag === tag) {
             data = cache[index].data;
-            cacheItemRender(cacheIndex + 1, parseInt(index, 2), tag, 'cache-hit');
+            cacheItemRender(cacheIndex + 1, index, tag, 'cache-hit');
             break;
         }
     }
@@ -50,23 +50,35 @@ function readFromCache(address) {
     return { data, hit: cacheIndex < cacheOptions.cacheNumber, num: cacheIndex };
 }
 
+function writeToCache(address, data) {
+    let { tag, index } = calculateTagIndex(address);
+    let cacheIndex = 0;
+
+    for (; cacheIndex < cacheOptions.cacheNumber; cacheIndex++) {
+        let cache = caches[cacheIndex];
+
+        if (cache[index] && cache[index].tag === tag) {
+            cache[index].data = data;
+            cacheItemRender(cacheIndex + 1, index, tag, 'cache-hit');
+            break;
+        }
+    }
+}
+
 function writeBackToFront(cacheIndex, address, data) {
-    let {tag, index} = calculateTagIndex(address);
-    let indexValue = parseInt(index, 2);
+    let { tag, index } = calculateTagIndex(address);
 
     for (let i = cacheIndex; i >= 0; i--) {
         let cache = caches[i];
         cache[index] = {tag, data};
-        cacheItemRender(i + 1, indexValue, tag, 'cache-error');
-        new Promise(r => setTimeout(r, 1));
+        cacheItemRender(i + 1, index, tag, 'cache-error');
+        new Promise(r => setTimeout(r, 1)).then();
     }
 }
 
 function calculateTagIndex(address) {
     // Unpack the cache and memory options
     const { offsetBits, indexBits } = cacheOptions;
-    const { memorySize, startAddress } = memoryOptions;
-    const memoryBits = Math.ceil(Math.log2(memorySize + startAddress));
 
     // Calculate the index
     const indexMask = (1 << indexBits) - 1; // Mask to extract the index bits
@@ -77,7 +89,7 @@ function calculateTagIndex(address) {
 
     // Return them as strings in binary format
     return {
-        tag: tag.toString(2).padStart(memoryBits - offsetBits - indexBits, '0'),
-        index: index.toString(2).padStart(indexBits, '0'),
+        tag: tag ? tag : 0,
+        index: index,
     };
 }
