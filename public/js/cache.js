@@ -33,7 +33,7 @@ function readFromCache(address) {
         // If the cache has the index, and the tag matches, return the data
         if (cache[index] && cache[index].tag === tag) {
             data = cache[index].data;
-            cacheItemRender(cacheIndex + 1, index, tag, 'cache-hit');
+            cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-hit');
             break;
         }
     }
@@ -58,8 +58,8 @@ function writeToCache(address, data) {
         let cache = caches[cacheIndex];
 
         if (cache[index] && cache[index].tag === tag) {
-            cache[index].data = data;
-            cacheItemRender(cacheIndex + 1, index, tag, 'cache-hit');
+            cache[index] = { valid: true, dirty: true, tag, data };
+            cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-hit');
             break;
         }
     }
@@ -70,8 +70,8 @@ function writeBackToFront(cacheIndex, address, data) {
 
     for (let i = cacheIndex; i >= 0; i--) {
         let cache = caches[i];
-        cache[index] = {tag, data};
-        cacheItemRender(i + 1, index, tag, 'cache-error');
+        cache[index] = {valid: true, dirty: false, tag, data};
+        cacheItemRender(i + 1, index, cache[index], 'cache-error');
         new Promise(r => setTimeout(r, 1)).then();
     }
 }

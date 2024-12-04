@@ -20,10 +20,12 @@ function nextStep() {
     if (currentMemoryAccess >= memoryAccessArr.length) return;
 
     let memAcc = memoryAccessArr[currentMemoryAccess];
-    console.log(calculateTagIndex(memAcc.address));
+
     if (memAcc.rw === 'R') {
-        let { hit, num } = readFromCache(memAcc.address);
-        renderHit(currentMemoryAccess, { hit, num });
+        let { hit, num, data } = readFromCache(memAcc.address);
+        renderHit(currentMemoryAccess, { hit, num, data });
+    }else {
+        writeToCache(memAcc.address, memAcc.value);
     }
 
     // Update the progress bar

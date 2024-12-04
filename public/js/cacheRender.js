@@ -26,14 +26,16 @@ function cacheRender(index, options) {
     }
 }
 
-function cacheItemRender(cache, index, tag, classToAdd) {
+function cacheItemRender(cache, index, cacheElement, classToAdd) {
+    let {tag, dirty, valid } = cacheElement;
+
     let container = $(`#cache${cache}`);
     let table = container.find('table')
     let row = table.find(`tbody tr:nth-child(${index + 1})`);
 
-    row.find('td:nth-child(1)').text("V");
-    row.find('td:nth-child(2)').text("F");
-    row.find('td:nth-child(3)').text(parseInt(tag, 2));
+    row.find('td:nth-child(1)').text(dirty ? "T" : "F");
+    row.find('td:nth-child(2)').text(valid ? "T" : "F");
+    row.find('td:nth-child(3)').text(tag);
 
     row.addClass(classToAdd);
 

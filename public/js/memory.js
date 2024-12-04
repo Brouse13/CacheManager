@@ -23,5 +23,5 @@ function __initMemory() {
 }
 
 function readFromMemory(address) {
-    return memory[address & 32];
+    return memory[address & ((-1) << 5)].value;
 }
