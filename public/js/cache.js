@@ -59,10 +59,13 @@ function writeToCache(address, data) {
 
         if (cache[index] && cache[index].tag === tag) {
             cache[index] = { valid: true, dirty: true, tag, data };
-            cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-hit');
+            cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-write');
             break;
         }
     }
+
+    index = writeToMemory(address, data);
+    // memoryItemRender(index, data, 'memory-write');
 }
 
 function writeBackToFront(cacheIndex, address, data) {

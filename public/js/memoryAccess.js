@@ -36,8 +36,8 @@ function nextStep() {
 
 function __initMemoryAccess() {
     memoryAccessArr = [
-        {"rw": "R", "address": 322, "value": 0, "hit": false},
-        {"rw": "R", "address": 322, "value": 0, "hit": false},
+        {"rw": "R", "address": 0x000, "value": 0, "hit": false},
+        {"rw": "R", "address": 0x810, "value": 0, "hit": false},
         {"rw": "R", "address": 324, "value": 0, "hit": false},
         {"rw": "R", "address": 325, "value": 0, "hit": false},
         {"rw": "W", "address": 326, "value": 89, "hit": false},
