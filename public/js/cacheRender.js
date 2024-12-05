@@ -33,8 +33,8 @@ function cacheItemRender(cache, index, cacheElement, classToAdd) {
     let table = container.find('table')
     let row = table.find(`tbody tr:nth-child(${index + 1})`);
 
-    row.find('td:nth-child(1)').text(dirty ? "T" : "F");
-    row.find('td:nth-child(2)').text(valid ? "T" : "F");
+    row.find('td:nth-child(1)').text(valid ? "T" : "F");
+    row.find('td:nth-child(2)').text(dirty ? "T" : "F");
     row.find('td:nth-child(3)').text(tag);
 
     row.addClass(classToAdd);

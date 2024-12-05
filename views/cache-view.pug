@@ -5,14 +5,14 @@
 form.cache-options
     .dropdown
         button.btn.dropdown-toggle(type="button", id="memoryOptions",
-            data-bs-toggle="dropdown", aria-expanded="false") Memory Options
+            data-bs-toggle="dropdown", aria-expanded="false")= `${lang['options']['memory']['title']}`
         .dropdown-menu(aria-labelledby="memoryOptions")
             a.dropdown-item(href="#") Memory Size
             +openmodal("Memory Start Address")
 
     .dropdown.dropdown-hover
         button.btn.dropdown-toggle(type="button", id="cacheOptions",
-            data-bs-toggle="dropdown", aria-expanded="false") Cache Options
+            data-bs-toggle="dropdown", aria-expanded="false")= `${lang['options']['cache']['title']}`
         .dropdown-menu(aria-labelledby="cacheOptions")
             +openmodal("Cache number")
             +openmodal("Cache size")
@@ -24,51 +24,51 @@ form.cache-options
 .cache-view
     .col-md.memory-container.overflow-hidden
         .title-container
-            h2.text-center Cache L1
+            h2.text-center= `${lang['tables']['cache1']}`
         .table-container
             .scrollable-table#cache1
                 table.table
                     thead.text-center
                         tr
-                            th(scope="col") Valid
-                            th(scope="col") Dirty
-                            th(scope="col") Tag
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
+                            th(scope="col")= `${lang['tables']['cache']['dirty']}`
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
                     tbody
 
     .col-md.memory-container.overflow-hidden
         .title-container
-            h2.text-center Cache L2
+            h2.text-center= `${lang['tables']['cache2']}`
         .table-container
             .scrollable-table#cache2
                 table.table
                     thead.text-center
                         tr
-                            th(scope="col") Valid
-                            th(scope="col") Dirty
-                            th(scope="col") Tag
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
+                            th(scope="col")= `${lang['tables']['cache']['dirty']}`
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
                     tbody
     .col-md.memory-container.overflow-hidden
         .title-container
-            h2.text-center Cache L3
+            h2.text-center= `${lang['tables']['cache3']}`
         .table-container
             .scrollable-table#cache3
                 table.table
                     thead.text-center
                         tr
-                            th(scope="col") Valid
-                            th(scope="col") Dirty
-                            th(scope="col") Tag
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
+                            th(scope="col")= `${lang['tables']['cache']['dirty']}`
+                            th(scope="col")= `${lang['tables']['cache']['valid']}`
                     tbody
     .col-md.memory-container.overflow-hidden
         .title-container
-            h2.text-center Memory
+            h2.text-center= `${lang['tables']['memory']['title']}`
         .table-container
             .scrollable-table
                 table.table(id="memory-table")
                     thead.text-center
                         tr
-                            th(scope="col") Address
-                            th(scope="col") Value
+                            th(scope="col")= `${lang['tables']['memory']['address']}`
+                            th(scope="col")= `${lang['tables']['memory']['value']}`
                     tbody
 .cache-menu
     .cache-controls

@@ -12,6 +12,7 @@ home.get('/', (req , res ) =>{
 
     // Load the language
     let lang = loadLanguage(req.query.lang || defaultLanguage);
+    console.log(lang)
     res.render("home.pug", { memory_content, lang });
 })
 

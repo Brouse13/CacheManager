@@ -1,15 +1,15 @@
 ﻿.title-container
-    h2.text-center Memory Access
+    h2.text-center= `${lang['access']['title']}`
     .scrollable-table(style="height: 68%;")
         table.table#memoryAccess
             thead.text-center(style="background-color: #3E885B;")
-                th(scope=col) R/W
-                th(scope=col) Address
-                th(scope=col) Value
-                th(scope=col) Hit / Miss
+                th(scope=col)= `${lang['access']['r/w']}`
+                th(scope=col)= `${lang['access']['address']}`
+                th(scope=col)= `${lang['access']['value']}`
+                th(scope=col)= `${lang['access']['hit']} / ${lang['access']['miss']}`
             tbody
 .container.mt-3.stats.d-flex.flex-column.justify-content-center
-    h3.text-center Stats
+    h3.text-center= `${lang['access']['stats']['title']}`
     .row
         .col-sm-2.fw-bold Hits
         .col 10
