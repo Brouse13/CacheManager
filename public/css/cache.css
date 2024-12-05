@@ -1,7 +1,10 @@
 ﻿.cache-options {
-    background-color: lime;
+    border-top: #19753A solid 2px;
+    border-bottom: #19753A solid 2px;
+    background-color: var(--page-primary);
     display: flex;
     flex-direction: row;
+    margin: 0;
 }
 
 .cache-options > div {
@@ -12,21 +15,31 @@
 
 .cache-view {
     height: 82%;
-    background-color: red;
     display: flex;
     flex-direction: row;
+    background-color: var(--page-secondary);
 }
 
 .cache-view > div:nth-child(odd) {
-    background-color: rebeccapurple;
+    background-color: var(--table-primary);
+    color: var(--page-secondary);
+}
+
+.cache-view > div:nth-child(odd) * {
+    background-color: var(--table-primary);
 }
 
 .cache-view > div:nth-child(even) {
-    background-color: tomato;
+    background-color: var(--table-secondary);
+    color: var(--page-secondary);
+}
+
+.cache-view > div:nth-child(even) * {
+    background-color: var(--table-secondary);
 }
 
 .cache-menu {
-    background-color: blue;
+    background-color: var(--page-secondary);
     height: 10%;
     display: flex;
     flex-direction: column;
@@ -39,7 +52,6 @@
 }
 
 .cache-progress {
-    background-color: blue;
     width: 80%;
     align-items: center;
     margin: 0 auto;
@@ -56,12 +68,22 @@
 }
 
 .cache-progress {
-    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #85BDA6;
 }
 
 .cache-progress .progress {
-    height: 10px;
+    height: 15px;
+    background-color: #85BDA6;
     border-radius: 20px;
+
+}
+
+.cache-progress .progress div {
+    background-color: #BEDCFE;
+    color: black;
+    font-weight: bold;
+    font-size: 13px;
 }
 
 .cache-error {

@@ -1,5 +1,5 @@
 ﻿.header
-    nav.navbar.navbar-expand-lg.navbar-light
+    nav.navbar.navbar-expand-lg
         .container-fluid
             a.navbar-brand= `${lang['navbar']['brand']}`
             button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbar",
@@ -9,7 +9,7 @@
             .collapse.navbar-collapse#navbar
                 ul.navbar-nav.ms-auto
                     li.nav-item.dropdown.me-2
-                        a.nav-link.dropdown-toggle(id="language", role="button", data-bs-toggle="dropdown",
+                        a.dropdown-toggle(id="language", role="button", data-bs-toggle="dropdown",
                                                    aria-expanded="false")= `${lang['language']['title']}`
                         ul.dropdown-menu.dropdown-menu-end(aria-labelledby="language")
                             li
