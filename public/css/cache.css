@@ -93,6 +93,10 @@
     background-color: rgba(12, 170, 12, 0.87)!important;
 }
 
+.cache-write {
+    background-color: rgba(225, 142, 15, 0.87) !important;
+}
+
 tr {
     border-color: transparent!important;
 }

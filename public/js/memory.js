@@ -25,3 +25,9 @@ function __initMemory() {
 function readFromMemory(address) {
     return memory[address & ((-1) << 5)].value;
 }
+
+function writeToMemory(address, value) {
+    let index = address & ((-1) << 5);
+    memory[index].value = value;
+    return index;
+}
