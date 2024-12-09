@@ -63,8 +63,8 @@ form.cache-options
         .title-container
             h2.text-center= `${lang['tables']['memory']['title']}`
         .table-container
-            .scrollable-table
-                table.table(id="memory-table")
+            .scrollable-table#memory-table
+                table.table
                     thead.text-center
                         tr
                             th(scope="col")= `${lang['tables']['memory']['address']}`

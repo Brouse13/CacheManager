@@ -46,7 +46,7 @@ function readFromCache(address) {
     }
 
     // Write the data to all the caches that haven't got the data
-    writeBackToFront(cacheIndex-1, address, data);
+    writeBack(0, address, data);
     return { data, hit: cacheIndex < cacheOptions.cacheNumber, num: cacheIndex };
 }
 
@@ -68,15 +68,53 @@ function writeToCache(address, data) {
     // memoryItemRender(index, data, 'memory-write');
 }
 
-function writeBackToFront(cacheIndex, address, data) {
+function writeBack(cacheIndex, address, data) {
     let { tag, index } = calculateTagIndex(address);
+    let cache = caches[cacheIndex];
 
-    for (let i = cacheIndex; i >= 0; i--) {
-        let cache = caches[i];
-        cache[index] = {valid: true, dirty: false, tag, data};
-        cacheItemRender(i + 1, index, cache[index], 'cache-error');
+    // If the cache element is not set, set it
+    if (!cache[index]) {
+        cache[index] = { valid: true, dirty: false, tag, data };
+        cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
         new Promise(r => setTimeout(r, 1)).then();
+        return;
     }
+
+    // If the cache element is dirty, write it back to memory
+    let raw = cache[index]
+
+    cache[index] = { valid: true, dirty: false, tag, data };
+    cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
+    new Promise(r => setTimeout(r, 1)).then();
+    writeBack1(cacheIndex + 1, raw.tag, index, raw.data);
+}
+
+function writeBack1(cacheIndex, tag, index, data) {
+    let cache = caches[cacheIndex];
+
+    // Is memory access
+    if (index === cacheOptions.cacheNumber) {
+        index = writeToMemory(address, data);
+        memoryItemRender(index, { address, data }, 'cache-write');
+        new Promise(r => setTimeout(r, 1)).then();
+        return;
+    }
+
+    // If the cache element is not set, set it
+    if (!cache[index]) {
+        cache[index] = { valid: true, dirty: false, tag, data };
+        cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
+        new Promise(r => setTimeout(r, 1)).then();
+        return;
+    }
+
+    // If the cache element is dirty, write it back to memory
+    let raw = cache[index]
+
+    cache[index] = { valid: true, dirty: false, tag, data };
+    cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
+    new Promise(r => setTimeout(r, 1)).then();
+    writeBack1(cacheIndex + 1, raw.tag, index, raw.data);
 }
 
 function calculateTagIndex(address) {
