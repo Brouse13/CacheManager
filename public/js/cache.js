@@ -86,35 +86,7 @@ function writeBack(cacheIndex, address, data) {
     cache[index] = { valid: true, dirty: false, tag, data };
     cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
     new Promise(r => setTimeout(r, 1)).then();
-    writeBack1(cacheIndex + 1, raw.tag, index, raw.data);
-}
-
-function writeBack1(cacheIndex, tag, index, data) {
-    let cache = caches[cacheIndex];
-
-    // Is memory access
-    if (index === cacheOptions.cacheNumber) {
-        index = writeToMemory(address, data);
-        memoryItemRender(index, { address, data }, 'cache-write');
-        new Promise(r => setTimeout(r, 1)).then();
-        return;
-    }
-
-    // If the cache element is not set, set it
-    if (!cache[index]) {
-        cache[index] = { valid: true, dirty: false, tag, data };
-        cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
-        new Promise(r => setTimeout(r, 1)).then();
-        return;
-    }
-
-    // If the cache element is dirty, write it back to memory
-    let raw = cache[index]
-
-    cache[index] = { valid: true, dirty: false, tag, data };
-    cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
-    new Promise(r => setTimeout(r, 1)).then();
-    writeBack1(cacheIndex + 1, raw.tag, index, raw.data);
+    writeBack(cacheIndex + 1, tagIndexToAddress(raw.tag, index), raw.data);
 }
 
 function calculateTagIndex(address) {
@@ -133,4 +105,10 @@ function calculateTagIndex(address) {
         tag: tag ? tag : 0,
         index: index,
     };
+}
+
+function tagIndexToAddress(tag, index) {
+    const { offsetBits, indexBits } = cacheOptions;
+
+    return (tag << (offsetBits + indexBits)) | (index << offsetBits);
 }
