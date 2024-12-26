@@ -38,11 +38,16 @@ function cacheRender(index, options) {
  * @param classToAdd Class to add to the row
  */
 function cacheItemRender(cacheId, elementIndex, cacheElement, classToAdd) {
-    let {tag, dirty, valid } = cacheElement;
+    let { tag, dirty, valid } = cacheElement;
 
     let container = $(`#cache${cacheId}`);
     let table = container.find('table')
     let row = table.find(`tbody tr:nth-child(${elementIndex + 1})`);
+
+    if (row.hasClass('rotated')) {
+        row.removeClass('rotated');
+        row.html(`<td></td><td></td><td></td>`);
+    }
 
     row.find('td:nth-child(1)').text(valid ? "T" : "F");
     row.find('td:nth-child(2)').text(dirty ? "T" : "F");

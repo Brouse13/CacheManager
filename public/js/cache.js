@@ -58,8 +58,6 @@ function __writeToCache(address, data) {
     // Read from the cache or memory
     let { hit, num } = readFromCache(address);
 
-    console.log(readFromCache(address))
-
     // If we haven't found the data, push it to the cache
     if (!hit) {
         pushDataToCache(address, data);
