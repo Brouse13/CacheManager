@@ -19,28 +19,39 @@ function nextStep() {
     // Avoid going over the memory accesses
     if (currentMemoryAccess >= memoryAccessArr.length) return;
 
+    // Get the next access to the memory
     let memAcc = memoryAccessArr[currentMemoryAccess];
 
+    // If it's a read access, read from the cache
     if (memAcc.rw === 'R') {
+        // Read from the cache or memory
         let { hit, num, data } = readFromCache(memAcc.address);
+
+        // If the element is not on the cache, push it to the cache L1
+        if (!hit) {
+            pushDataToCache()
+        }
+
         renderHit(currentMemoryAccess, { hit, num, data });
-    }else {
+    }
+
+    // If it's a write access, write to the cache
+    if (memAcc.rw === 'W') {
         writeToCache(memAcc.address, memAcc.value);
     }
 
     // Update the progress bar
-
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
     updateProgressBar(++currentMemoryAccess, memoryAccessArr.length);
 }
 
 function __initMemoryAccess() {
     memoryAccessArr = [
-        {"rw": "R", "address": 0x000, "value": 0, "hit": false},
-        {"rw": "R", "address": 0x810, "value": 0, "hit": false},
-        {"rw": "R", "address": 324, "value": 0, "hit": false},
-        {"rw": "R", "address": 325, "value": 0, "hit": false},
-        {"rw": "W", "address": 326, "value": 89, "hit": false},
+        new MemoryAccess("R", 0x000, 0),
+        new MemoryAccess("R", 0x810, 0),
+        new MemoryAccess("R", 324, 0),
+        new MemoryAccess("R", 325, 0),
+        new MemoryAccess("W", 326, 89),
         {"rw": "W", "address": 322, "value": 10, "hit": false},
         {"rw": "R", "address": 328, "value": 0, "hit": false},
         {"rw": "R", "address": 329, "value": 0, "hit": false},
@@ -84,3 +95,12 @@ $(document).ready(function () {
     __initMemory();
     __initCache();
 });
+
+class MemoryAccess {
+    constructor(rw, address, value) {
+        this.rw = rw;
+        this.address = address;
+        this.value = value;
+        this.hit = false;
+    }
+}

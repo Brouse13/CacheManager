@@ -6,14 +6,21 @@
                     </tr>`);
 }
 
-function memoryItemRender(index, data, classToAdd) {
-    let { address, value } = data;
+/**
+ * Render a memory item.
+ *
+ * @param address Address of the memory item
+ * @param value Value of the memory item
+ * @param classToAdd
+ */
+function memoryItemRender(address, value, classToAdd) {
+    let index = getMemoryIndex(address) >> 5;
 
     let container = $(`#memory-table`);
     let table = container.find('table')
     let row = table.find(`tbody tr:nth-child(${index + 1})`);
 
-    row.find('td:nth-child(1)').text(address.toString(16));
+    row.find('td:nth-child(1)').text(memory[getMemoryIndex(address)].address);
     row.find('td:nth-child(2)').text(value);
 
     row.addClass(classToAdd);

@@ -26,12 +26,20 @@ function cacheRender(index, options) {
     }
 }
 
-function cacheItemRender(cache, index, cacheElement, classToAdd) {
+/**
+ * Render a cache item.
+ *
+ * @param cacheId Id of the cache
+ * @param elementIndex Index of the element in the cache
+ * @param cacheElement Cache element to render
+ * @param classToAdd Class to add to the row
+ */
+function cacheItemRender(cacheId, elementIndex, cacheElement, classToAdd) {
     let {tag, dirty, valid } = cacheElement;
 
-    let container = $(`#cache${cache}`);
+    let container = $(`#cache${cacheId}`);
     let table = container.find('table')
-    let row = table.find(`tbody tr:nth-child(${index + 1})`);
+    let row = table.find(`tbody tr:nth-child(${elementIndex + 1})`);
 
     row.find('td:nth-child(1)').text(valid ? "T" : "F");
     row.find('td:nth-child(2)').text(dirty ? "T" : "F");
@@ -39,7 +47,7 @@ function cacheItemRender(cache, index, cacheElement, classToAdd) {
 
     row.addClass(classToAdd);
 
-    const offsetTop = 38 * (index - 1);
+    const offsetTop = 38 * (elementIndex - 1);
 
     // Smooth scroll to the highlighted row
     container.animate({ scrollTop: offsetTop }, 500);

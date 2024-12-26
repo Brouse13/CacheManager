@@ -12,6 +12,8 @@ const port = process.env.PORT || 3000;
 
 // Disable the 'x-powered-by' header.pug for security reasons
 app.disable('x-powered-by');
+app.set("view engine", "pug");
+app.set("views", "./views");
 
 // Add middlewares
 app.use(express.static("public"))
