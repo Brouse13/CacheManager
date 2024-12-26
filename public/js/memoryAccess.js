@@ -23,17 +23,7 @@ function nextStep() {
     let memAcc = memoryAccessArr[currentMemoryAccess];
 
     // If it's a read access, read from the cache
-    if (memAcc.rw === 'R') {
-        // Read from the cache or memory
-        let { hit, num, data } = readFromCache(memAcc.address);
-
-        // If the element is not on the cache, push it to the cache L1
-        if (!hit) {
-            pushDataToCache()
-        }
-
-        renderHit(currentMemoryAccess, { hit, num, data });
-    }
+    if (memAcc.rw === 'R') __readFromCache(memAcc.address);
 
     // If it's a write access, write to the cache
     if (memAcc.rw === 'W') {

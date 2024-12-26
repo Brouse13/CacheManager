@@ -45,13 +45,8 @@ function readFromCache(address) {
     }
 
     // If the data is not in the cache, read it from memory
-    // Then update the cache with the new data
     data = readFromMemory(address);
     return { data, hit: false, num: 3 };
-
-    // Write the data to all the caches that haven't got the data
-    //writeBack(0, address, data);
-    // return { data, hit: cacheIndex < cacheOptions.cacheNumber, num: cacheIndex };
 }
 
 function writeToCache(address, data) {
@@ -72,15 +67,25 @@ function writeToCache(address, data) {
     // memoryItemRender(index, data, 'memory-write');
 }
 
-function _readFromCache(address) {
-    let { tag, index }  = calculateTagIndex(address);
-    let cacheIndex = findInCache(address);
+/**
+ * Reads the data from the cache or memory and updates the cache.
+ *
+ * @param address The memory address to read from.
+ * @private
+ */
+function __readFromCache(address) {
+    // Read from the cache or memory
+    let { hit, num, data } = readFromCache(address);
 
-    // If the data is not in the cache, read it from memory
-    if (cacheIndex === -1) {
-        let data = readFromMemory(address);
-        pushDataToCache(address, data)
+    // If the element is not on the cache, push it to the cache L1
+    if (!hit) {
+        pushDataToCache(address, data);
+        return
     }
+
+    // If the element is on the cache, update the cache
+    let { index } = calculateTagIndex(address)
+    cacheItemRender(num + 1, index, data, 'cache-hit');
 }
 
 /**
