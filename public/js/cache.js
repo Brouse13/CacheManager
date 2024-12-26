@@ -49,22 +49,28 @@ function readFromCache(address) {
     return { data, hit: false, num: 3 };
 }
 
-function writeToCache(address, data) {
-    let { tag, index } = calculateTagIndex(address);
-    let cacheIndex = 0;
-
-    for (; cacheIndex < cacheOptions.cacheNumber; cacheIndex++) {
-        let cache = caches[cacheIndex];
-
-        if (cache[index] && cache[index].tag === tag) {
-            cache[index] = { valid: true, dirty: true, tag, data };
-            cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-write');
-            break;
-        }
+function __writeToCache(address, data) {
+    if(typeof address !== 'number' || typeof data !== "number") {
+        console.error('Invalid arguments');
+        return;
     }
 
-    index = writeToMemory(address, data);
-    // memoryItemRender(index, data, 'memory-write');
+    // Read from the cache or memory
+    let { hit, num } = readFromCache(address);
+
+    console.log(readFromCache(address))
+
+    // If we haven't found the data, push it to the cache
+    if (!hit) {
+        pushDataToCache(address, data);
+        num = 0;
+    }
+
+    // Then update the cache
+    let { tag, index } = calculateTagIndex(address);
+
+    caches[num][index] = new CacheElement(tag, true, true, data);
+    cacheItemRender(num + 1, index, caches[num][index], 'cache-write');
 }
 
 /**
@@ -74,18 +80,25 @@ function writeToCache(address, data) {
  * @private
  */
 function __readFromCache(address) {
+    // Check if the address is a number
+    if(typeof address !== 'number') {
+        console.error('Invalid argument');
+        return;
+    }
+
     // Read from the cache or memory
     let { hit, num, data } = readFromCache(address);
 
     // If the element is not on the cache, push it to the cache L1
     if (!hit) {
         pushDataToCache(address, data);
-        return
+        return data.data
     }
 
     // If the element is on the cache, update the cache
     let { index } = calculateTagIndex(address)
     cacheItemRender(num + 1, index, data, 'cache-hit');
+    return data.data
 }
 
 /**
@@ -143,27 +156,6 @@ function pushDataToCache(address, data) {
     }
 }
 
-function writeBack(cacheIndex, address, data) {
-    let { tag, index } = calculateTagIndex(address);
-    let cache = caches[cacheIndex];
-
-    // If the cache element is not set, set it
-    if (!cache[index]) {
-        cache[index] = { valid: true, dirty: false, tag, data };
-        cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
-        new Promise(r => setTimeout(r, 1)).then();
-        return;
-    }
-
-    // If the cache element is dirty, write it back to memory
-    let raw = cache[index]
-
-    cache[index] = { valid: true, dirty: false, tag, data };
-    cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
-    new Promise(r => setTimeout(r, 1)).then();
-    writeBack(cacheIndex + 1, tagIndexToAddress(raw.tag, index), raw.data);
-}
-
 /**
  * Calculate the tag and index from the address.
  *
@@ -200,7 +192,6 @@ function tagIndexToAddress(tag, index) {
 
     return (tag << (offsetBits + indexBits)) | (index << offsetBits);
 }
-
 
 class CacheElement {
     constructor(tag, valid, dirty, data) {

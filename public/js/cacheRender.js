@@ -24,6 +24,9 @@ function cacheRender(index, options) {
                         <td>-</td>
                       </tr>`);
     }
+
+    // FIX Add a NONE row to fix an error with the css scroll
+    cache.append(`<tr class="text-center"><td>NONE</td></tr>`);
 }
 
 /**

@@ -26,9 +26,7 @@ function nextStep() {
     if (memAcc.rw === 'R') __readFromCache(memAcc.address);
 
     // If it's a write access, write to the cache
-    if (memAcc.rw === 'W') {
-        writeToCache(memAcc.address, memAcc.value);
-    }
+    if (memAcc.rw === 'W') __writeToCache(memAcc.address, memAcc.value);
 
     // Update the progress bar
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
@@ -70,7 +68,6 @@ function __initMemoryAccess() {
     ]
 
     for (let i = 0; i < memoryAccessArr.length; i++) memoryAccessRender(memoryAccessArr[i]);
-
 }
 
 $(document).ready(function () {
