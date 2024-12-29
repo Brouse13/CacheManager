@@ -1,6 +1,8 @@
 ﻿let memoryAccessArr = []
 let currentMemoryAccess = 0;
 
+let cacheMap = {0: 'l1', 1: 'l2', 2: 'l3'};
+
 function previousStep() {
     // Avoid going under the memory accesses
     if (currentMemoryAccess <= 0) return;
@@ -22,11 +24,13 @@ function nextStep() {
     // Get the next access to the memory
     let memAcc = memoryAccessArr[currentMemoryAccess];
 
-    // If it's a read access, read from the cache
-    if (memAcc.rw === 'R') __readFromCache(memAcc.address);
+    // Read or write to the cache and store the result, it has the same structure
+    let res = memAcc.rw === 'R' ?
+        __readFromCache(memAcc.address) :
+        __writeToCache(memAcc.address, memAcc.value);
 
-    // If it's a write access, write to the cache
-    if (memAcc.rw === 'W') __writeToCache(memAcc.address, memAcc.value);
+    // Update the memory access with the result
+
 
     // Update the progress bar
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
@@ -40,8 +44,8 @@ function __initMemoryAccess() {
         new MemoryAccess("R", 324, 0),
         new MemoryAccess("R", 325, 0),
         new MemoryAccess("W", 326, 89),
-        {"rw": "W", "address": 322, "value": 10, "hit": false},
-        {"rw": "R", "address": 328, "value": 0, "hit": false},
+        new MemoryAccess("W", 322, 10),
+        new MemoryAccess("R", 0, 0),
         {"rw": "R", "address": 329, "value": 0, "hit": false},
         {"rw": "W", "address": 330, "value": 213, "hit": false},
         {"rw": "W", "address": 331, "value": 61, "hit": false},
@@ -81,6 +85,9 @@ $(document).ready(function () {
     updateProgressBar(currentMemoryAccess, memoryAccessArr.length);
     __initMemory();
     __initCache();
+
+    // Set the caches to the default values
+    for (let i = 0; i < cacheOptions.cacheNumber; i++) updateCacheStats(i);
 });
 
 class MemoryAccess {

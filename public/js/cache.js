@@ -62,6 +62,9 @@ function __writeToCache(address, data) {
     if (!hit) {
         pushDataToCache(address, data);
         num = 0;
+    }else {
+        // PushDataToCache will update the cacheStats
+        updateCacheStats(num, true);
     }
 
     // Then update the cache
@@ -69,6 +72,7 @@ function __writeToCache(address, data) {
 
     caches[num][index] = new CacheElement(tag, true, true, data);
     cacheItemRender(num + 1, index, caches[num][index], 'cache-write');
+    return {hit: hit, num: num, data: data.data};
 }
 
 /**
@@ -90,13 +94,16 @@ function __readFromCache(address) {
     // If the element is not on the cache, push it to the cache L1
     if (!hit) {
         pushDataToCache(address, data);
-        return data.data
+        return {hit: hit, num: num, data: data.data};
+    }else {
+        // PushDataToCache will update the cacheStats
+        updateCacheStats(num, true);
     }
 
     // If the element is on the cache, update the cache
     let { index } = calculateTagIndex(address)
     cacheItemRender(num + 1, index, data, 'cache-hit');
-    return data.data
+    return {hit: hit, num: num, data: data.data};
 }
 
 /**
@@ -135,6 +142,9 @@ function pushDataToCache(address, data) {
         cache[index] = new CacheElement(tag, true, dirty, data);
         cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
 
+        // Update the cacheStats with miss
+        updateCacheStats(cacheIndex, false);
+
         // If we reached the last non-written cache, end
         if (tmp === undefined) {
             data = undefined
@@ -151,6 +161,10 @@ function pushDataToCache(address, data) {
     if (data && dirty) {
         writeToMemory(address, data);
         memoryItemRender({ address: address, data: data }, 'cache-write');
+
+        let c = cacheMap[index] || 'l1';
+        let cpi = calculateStat(cache, true)
+        renderStats(cache, { hit: stats[c].hit, miss: stats[c].miss, cpi: cpi });
     }
 }
 

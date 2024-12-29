@@ -10,23 +10,31 @@
             tbody
 .container.mt-3.stats.d-flex.flex-column.justify-content-center
     h3.text-center= `${lang['access']['stats']['title']}`
-    .row
-        .col-sm-2.fw-bold Hits
-        .col 10
-        .col-sm-2.fw-bold Hits
-        .col 10
-    .row
-        .col-sm-2.fw-bold Misses
-        .col 10
-        .col-sm-2.fw-bold Misses
-        .col 10
-    .row
-        .col-sm-2.fw-bold Ratio
-        .col 100%
-        .col-sm-2.fw-bold Ratio
-        .col 100%
-    .row
-        .col-sm-2.fw-bold Ratio
-        .col 100%
-        .col-sm-2.fw-bold Ratio
-        .col 100%
+    .row.mx-1
+        .col-sm.fw-bold Hits L1
+        .col-sm-1#hit-l1 0
+        .col-sm.fw-bold Hits L2
+        .col-sm-1#hit-l2 0
+        .col-sm.fw-bold Hits L3
+        .col-sm-1#hit-l3 0
+    .row.mx-1
+        .col-sm.fw-bold Misses L1
+        .col-sm-1#miss-l1 0
+        .col-sm.fw-bold Misses L2
+        .col-sm-1#miss-l2 0
+        .col-sm.fw-bold Misses L3
+        .col-sm-1#miss-l3 0
+    .row.mx-1
+        .col-sm.fw-bold Ratio L1
+        .col-sm-1#ratio-l1 0
+        .col-sm.fw-bold Ratio L2
+        .col-sm-1#ratio-l2 0
+        .col-sm.fw-bold Ratio L3
+        .col-sm-1#ratio-l3 0
+    .row.mx-1
+        .col-sm.fw-bold CPI L1
+        .col-sm-1#cpi-l1 0
+        .col-sm.fw-bold CPI L2
+        .col-sm-1#cpi-l2 0
+        .col-sm.fw-bold CPI L3
+        .col-sm-1#cpi-l3 0>
