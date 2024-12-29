@@ -55,6 +55,6 @@ function updateCacheStats(index, type) {
 function renderStats(cache, data) {
     $(`#hit-${cache}`).text(data.hit);
     $(`#miss-${cache}`).text(data.miss);
-    $(`#cpi-${cache}`).text(Math.round(data.cpi.cpi));
+    $(`#cpi-${cache}`).text(Number(Math.round(data.cpi.cpi + 'e2') + 'e-2'));
     $(`#ratio-${cache}`).text(Math.round(data.cpi.range * 100) + '%');
 }
