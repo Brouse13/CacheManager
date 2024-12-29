@@ -38,8 +38,12 @@ body {
 .memory-container {
     background-color: var(--page-secondary);
     border-top: #19753A solid 2px;
-    width: 40%;
+    width: 45%;
     overflow-x: hidden;
+}
+
+.no-pad-left {
+    padding-left: 0!important;
 }
 
 :root {
