@@ -34,8 +34,14 @@ function memoryItemRender(address, value, classToAdd) {
     setTimeout(() => { row.removeClass(classToAdd); }, 1000);
 }
 
+/**
+ * Render a hit or miss on the access table
+ *
+ * @param index index of the table
+ * @param hit hit cache index and data
+ */
 function renderHit(index, hit) {
     let memoryAccess = $(`#memoryAccess tbody tr:nth-child(${index + 1})`);
-    memoryAccess.find('td:nth-child(4)').text(!hit.hit ? 'Miss' : `Hit - ${hit.num + 1}`);
     memoryAccess.find('td:nth-child(3)').text(hit.data);
+    memoryAccess.find('td:nth-child(4)').text(!hit.hit ? 'Miss' : `Hit - ${hit.num + 1}`);
 }

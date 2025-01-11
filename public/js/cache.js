@@ -40,13 +40,13 @@ function readFromCache(address) {
         // If the cache has the index, and the tag matches, return the data
         if (cache[index] && cache[index].tag === tag) {
             // cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-hit');
-            return { data: cache[index], hit: true, num: cacheIndex };
+            return { data: cache[index].data, hit: true, num: cacheIndex };
         }
     }
 
     // If the data is not in the cache, read it from memory
     data = readFromMemory(address);
-    return { data, hit: false, num: 3 };
+    return { data: data, hit: false, num: 3 };
 }
 
 function __writeToCache(address, data) {
@@ -94,7 +94,7 @@ function __readFromCache(address) {
     // If the element is not on the cache, push it to the cache L1
     if (!hit) {
         pushDataToCache(address, data);
-        return {hit: hit, num: num, data: data.data};
+        return { hit: hit, num: num, data: data };
     }else {
         // PushDataToCache will update the cacheStats
         updateCacheStats(num, true);
@@ -103,7 +103,7 @@ function __readFromCache(address) {
     // If the element is on the cache, update the cache
     let { index } = calculateTagIndex(address)
     cacheItemRender(num + 1, index, data, 'cache-hit');
-    return {hit: hit, num: num, data: data.data};
+    return { it: hit, num: num, data: data };
 }
 
 /**

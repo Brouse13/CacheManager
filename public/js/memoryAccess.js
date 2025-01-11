@@ -30,6 +30,7 @@ function nextStep() {
         __writeToCache(memAcc.address, memAcc.value);
 
     // Update the memory access with the result
+    if (res) renderHit(currentMemoryAccess, res)
 
 
     // Update the progress bar
@@ -39,37 +40,37 @@ function nextStep() {
 
 function __initMemoryAccess() {
     memoryAccessArr = [
-        new MemoryAccess("R", 0x000, 0),
-        new MemoryAccess("R", 0x810, 0),
-        new MemoryAccess("R", 324, 0),
-        new MemoryAccess("R", 325, 0),
+        new MemoryAccess("R", 0x000, '-'),
+        new MemoryAccess("R", 0x810, '-'),
+        new MemoryAccess("R", 324, '-'),
+        new MemoryAccess("R", 325, '-'),
         new MemoryAccess("W", 326, 89),
         new MemoryAccess("W", 322, 10),
-        new MemoryAccess("R", 0, 0),
-        {"rw": "R", "address": 329, "value": 0, "hit": false},
-        {"rw": "W", "address": 330, "value": 213, "hit": false},
-        {"rw": "W", "address": 331, "value": 61, "hit": false},
-        {"rw": "W", "address": 969, "value": 229, "hit": false},
-        {"rw": "R", "address": 386, "value": 0, "hit": false},
-        {"rw": "R", "address": 824, "value": 0, "hit": false},
-        {"rw": "R", "address": 185, "value": 0, "hit": false},
-        {"rw": "W", "address": 684, "value": 107, "hit": false},
-        {"rw": "W", "address": 390, "value": 232, "hit": false},
-        {"rw": "W", "address": 851, "value": 177, "hit": false},
-        {"rw": "R", "address": 393, "value": 0, "hit": false},
-        {"rw": "R", "address": 438, "value": 0, "hit": false},
-        {"rw": "R", "address": 493, "value": 0, "hit": false},
-        {"rw": "R", "address": 198, "value": 0, "hit": false},
-        {"rw": "R", "address": 521, "value": 0, "hit": false},
-        {"rw": "W", "address": 470, "value": 126, "hit": false},
-        {"rw": "W", "address": 251, "value": 173, "hit": false},
-        {"rw": "W", "address": 972, "value": 39, "hit": false},
-        {"rw": "R", "address": 761, "value": 0, "hit": false},
-        {"rw": "W", "address": 552, "value": 198, "hit": false},
-        {"rw": "R", "address": 695, "value": 0, "hit": false},
-        {"rw": "W", "address": 856, "value": 160, "hit": false},
-        {"rw": "R", "address": 294, "value": 0, "hit": false}
-    ]
+        new MemoryAccess("R", 0, '-'),
+        new MemoryAccess("R", 329, '-'),
+        new MemoryAccess("W", 330, 213),
+        new MemoryAccess("W", 331, 61),
+        new MemoryAccess("W", 969, 229),
+        new MemoryAccess("R", 386, '-'),
+        new MemoryAccess("R", 824, '-'),
+        new MemoryAccess("R", 185, '-'),
+        new MemoryAccess("W", 684, 107),
+        new MemoryAccess("W", 390, 232),
+        new MemoryAccess("W", 851, 177),
+        new MemoryAccess("R", 393, '-'),
+        new MemoryAccess("R", 438, '-'),
+        new MemoryAccess("R", 493, '-'),
+        new MemoryAccess("R", 198, '-'),
+        new MemoryAccess("R", 521, '-'),
+        new MemoryAccess("W", 470, 126),
+        new MemoryAccess("W", 251, 173),
+        new MemoryAccess("W", 972, 39),
+        new MemoryAccess("R", 761, '-'),
+        new MemoryAccess("W", 552, 198),
+        new MemoryAccess("R", 695, '-'),
+        new MemoryAccess("W", 856, 160),
+        new MemoryAccess("R", 294, '-')
+    ];
 
     for (let i = 0; i < memoryAccessArr.length; i++) memoryAccessRender(memoryAccessArr[i]);
 }
