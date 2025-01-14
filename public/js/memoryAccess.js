@@ -3,13 +3,19 @@ let currentMemoryAccess = 0;
 
 let cacheMap = {0: 'l1', 1: 'l2', 2: 'l3'};
 
+const states = []
+
 function previousStep() {
     // Avoid going under the memory accesses
     if (currentMemoryAccess <= 0) return;
 
+    // Load the last state from memory
+    loadState()
+
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess - 1);
     updateProgressBar(--currentMemoryAccess, memoryAccessArr.length);
 }
+
 function playPause() {
     // Change the icon from play to pause and vice versa
     $(this).find('.fa-play, .fa-pause')
@@ -24,6 +30,9 @@ function nextStep() {
     // Get the next access to the memory
     let memAcc = memoryAccessArr[currentMemoryAccess];
 
+    // Before update the content save the current state
+    saveState()
+
     // Read or write to the cache and store the result, it has the same structure
     let res = memAcc.rw === 'R' ?
         __readFromCache(memAcc.address) :
@@ -31,7 +40,6 @@ function nextStep() {
 
     // Update the memory access with the result
     if (res) renderHit(currentMemoryAccess, res)
-
 
     // Update the progress bar
     selectMemoryAccess(currentMemoryAccess, currentMemoryAccess + 1);
@@ -73,6 +81,91 @@ function __initMemoryAccess() {
     ];
 
     for (let i = 0; i < memoryAccessArr.length; i++) memoryAccessRender(memoryAccessArr[i]);
+}
+
+/**
+ * Load the last state that was stored on the history, and then
+ * render it.
+ */
+function loadState() {
+    if (history.length <= 1) return;
+
+    // Render last state
+    const lastState = states[states.length - 1]
+    __renderState(lastState)
+
+    // Remove last state
+    states.pop()
+}
+
+/**
+ * Get the current state of the tables and push it to the history
+ */
+function saveState() {
+    let $cache1 = $(`#cache1 table > tbody > tr`);
+    let $cache2 = $(`#cache2 table > tbody > tr`);
+    let $cache3 = $(`#cache3 table > tbody > tr`);
+    let $memAccess = $(`#memoryAccess > tbody > tr`);
+
+    function format(data) {
+        let row = []
+        data.each(function() {
+            const rowValues = [];
+            $(this).find('td').each(function () {
+                rowValues.push($(this).text());
+            });
+            row.push(rowValues);
+        });
+
+        return row;
+    }
+
+    // Push the html on the states
+    states.push([
+        format($cache1),
+        format($cache2),
+        format($cache3),
+        format($memAccess),
+        structuredClone(caches),
+        structuredClone(memory),
+        structuredClone(stats),
+    ])
+}
+
+/**
+ * Render on the table the given state
+ *
+ * @param state array of arrays
+ * @private
+ */
+function __renderState(state) {
+    let toRender = [
+        "#cache1 table",
+        "#cache2 table",
+        "#cache3 table",
+        "#memoryAccess"
+    ]
+
+    // Save the state of the caches and memory
+    caches =  state[4]
+    memory =  state[5]
+    stats = state[6]
+
+    // Load the stat of the cache
+    for (let i = 0; i < toRender.length; i++) {
+        let $element = $(`${toRender[i]} > tbody`).find(`tr`);
+        let currentState = state[i];
+
+        currentState.forEach((row, rowIndex) => {
+            // Map the row into a html row without the <tr></tr> tags
+            let rowHTML = row.map(value => `<td>${value}</td>`).join('');
+
+            $($element[rowIndex]).html(rowHTML);
+        })
+
+        // Update the cache
+        updateCacheStats(i)
+    }
 }
 
 $(document).ready(function () {
