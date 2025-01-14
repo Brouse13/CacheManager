@@ -1,11 +1,11 @@
 ﻿let cacheOptions = {
     cacheNumber: 3,
     dirty: false,
-    validBit: false,
     indexBits: 5,
     offsetBits: 5,
     replacementPolicy: 'LRU',
-    associativity: 'DIRECT_MAPPED'
+    associativity: 'N-WAY',
+    n_way: 2
 }
 
 let caches = [];
@@ -37,10 +37,46 @@ function readFromCache(address) {
     for (cacheIndex = 0; cacheIndex < cacheOptions.cacheNumber; cacheIndex++) {
         let cache = caches[cacheIndex];
 
-        // If the cache has the index, and the tag matches, return the data
-        if (cache[index] && cache[index].tag === tag) {
-            // cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-hit');
-            return { data: cache[index].data, hit: true, num: cacheIndex };
+        // Get the data from the cache can be 3 types
+        switch (cacheOptions.associativity) {
+            case "DIRECT_MAP":
+                // On DIRECT_MAP each element can only be on a specific position so
+                // with a simple condition we can get the value
+                if (cache[index] && cache[index].tag === tag) {
+                    return { data: cache[index], hit: true, num: cacheIndex, renderIndex: index };
+                }
+                break
+            case "N-WAY":
+                // In a N-WAY the cache will be a 2d array the first dimension will be the
+                // index, the second, will be the possible positions, it could be a 1d array
+                // with n * 2^indexBits but is easier like this
+
+                // Get the possible positions
+                let n_set = cache[index];
+                if(!n_set) break
+                let i = -1;
+                for (const element of n_set) {
+                    i++
+                    if (element.tag !== tag) continue
+
+                    // If the tag is the same return the element data
+                    return { data: element, hit: true, num: cacheIndex, renderIndex: i };
+                }
+
+                break
+            case "FULLY_ASSOCIATIVE":
+                // On a FULLY_ASSOCIATIVE the value can be stored in any position of
+                // the cache so we have to loop it
+                if (!cache) break
+                let j = -1;
+                for (const [index, element] in Object.entries(cache)) {
+                    j++
+                    // Different index, continue
+                    if (parseInt(index) !== index) continue;
+
+                    return { data: element, hit: true, num: cacheIndex, renderIndex: j };
+                }
+                break
         }
     }
 
@@ -70,8 +106,45 @@ function __writeToCache(address, data) {
     // Then update the cache
     let { tag, index } = calculateTagIndex(address);
 
-    caches[num][index] = new CacheElement(tag, true, true, data);
-    cacheItemRender(num + 1, index, caches[num][index], 'cache-write');
+    let indexRender = index;
+    let dataRender;
+
+    switch (cacheOptions.associativity) {
+        case "DIRECT_MAP":
+            caches[num][index] = new CacheElement(tag, true, true, data);
+
+            dataRender = caches[num][index]
+            break
+        case "N-WAY":
+            let set = caches[num][index]
+
+            let i = -1
+            if(!set) break
+            for (let element of set) {
+                i++
+                if (element.tag !== tag) continue
+
+                element = new CacheElement(tag, true, true, data)
+                dataRender = element
+                indexRender = cacheOptions.n_way * index + i
+            }
+
+            break
+        case "FULLY_ASSOCIATIVE":
+            let j = -1
+            if (!caches[num]) break
+            for (let [key, element] in Object.entries(caches[num])) {
+                j++
+                if (element.tag !== tag) continue
+
+                element = new CacheElement(tag, true, true, data)
+                dataRender = element
+                indexRender = j
+            }
+            break
+    }
+
+    cacheItemRender(num + 1, indexRender, dataRender, 'cache-write');
     return {hit: hit, num: num, data: data.data};
 }
 
@@ -89,7 +162,7 @@ function __readFromCache(address) {
     }
 
     // Read from the cache or memory
-    let { hit, num, data } = readFromCache(address);
+    let { hit, num, data, renderIndex } = readFromCache(address);
 
     // If the element is not on the cache, push it to the cache L1
     if (!hit) {
@@ -102,24 +175,16 @@ function __readFromCache(address) {
 
     // If the element is on the cache, update the cache
     let { index } = calculateTagIndex(address)
-    cacheItemRender(num + 1, index, data, 'cache-hit');
-    return { it: hit, num: num, data: data };
-}
 
-/**
- * Find the cache that has the data.
- * @param address The memory address to search for.
- * @returns {number}
- */
-function findInCache(address) {
-    let { tag, index } = calculateTagIndex(address);
-
-    for (let cacheIndex = 0; cacheIndex < cacheOptions.cacheNumber; cacheIndex++) {
-        let cache = caches[cacheIndex];
-
-        if (cache[index] && cache[index].tag === tag) return cacheIndex;
+    // Only we have to update this if we have n-way, the rest is given by the readFromCache
+    switch (cacheOptions.associativity) {
+        case "N-WAY":
+            renderIndex += cacheOptions.n_way * index;
+            break
     }
-    return -1
+
+    cacheItemRender(num + 1, renderIndex, data, 'cache-hit');
+    return { hit: hit, num: num, data: data };
 }
 
 /**
@@ -136,11 +201,61 @@ function pushDataToCache(address, data) {
     // Loop all the caches
     for (let cacheIndex = 0; cacheIndex < cacheOptions.cacheNumber; cacheIndex++) {
         let cache = caches[cacheIndex];
-        let tmp = cache[index];
+        let tmp;
 
-        // Update the value
-        cache[index] = new CacheElement(tag, true, dirty, data);
-        cacheItemRender(cacheIndex + 1, index, cache[index], 'cache-error');
+        let renderIndex;
+        let renderData;
+
+        switch (cacheOptions.associativity) {
+            case "DIRECT_MAP":
+                tmp = cache[index]
+                cache[index] = new CacheElement(tag, true, dirty, data);
+
+                renderIndex = index;
+                renderData = cache[index]
+                break
+            case "N-WAY":
+                if (!cache[index]) cache[index] = []
+
+                let set = cache[index]
+                let setSize = cacheOptions.n_way
+
+                // Stores the position on the cacheItemRender array
+                renderIndex = setSize * index - 1
+
+                if (set.length < setSize) {
+                    // Cache has space
+                    renderData = new CacheElement(tag, true, dirty, data)
+                    renderIndex += set.push(renderData);
+                }else {
+                    // Cache hasn't got space, replace first (has to be LRU)
+                    tmp = set[0]
+                    set[0] = new CacheElement(tag, true, dirty, data)
+
+                    renderIndex++
+                    renderData = set[0]
+                }
+                break
+            case "FULLY_ASSOCIATIVE":
+                let maxSize = Math.pow(2, cacheOptions.indexBits)
+
+                if (cache.length < maxSize) {
+                    // Cache has space
+                    renderData = new CacheElement(tag, true, dirty, data)
+                    renderIndex = cache.push(renderData)
+                }else {
+                    // Cache hasn't got space, replace first (has to be LRU)
+                    tmp = cache[0]
+                    cache[0] = new CacheElement(tag, true, dirty, data)
+
+                    renderIndex = 0;
+                    renderData = cache[0]
+                }
+                break
+        }
+
+        // Render the item on the cache as a miss
+        cacheItemRender(cacheIndex + 1, renderIndex, renderData, 'cache-error');
 
         // Update the cacheStats with miss
         updateCacheStats(cacheIndex, false);
@@ -161,10 +276,6 @@ function pushDataToCache(address, data) {
     if (data && dirty) {
         writeToMemory(address, data);
         memoryItemRender({ address: address, data: data }, 'cache-write');
-
-        let c = cacheMap[index] || 'l1';
-        let cpi = calculateStat(cache, true)
-        renderStats(cache, { hit: stats[c].hit, miss: stats[c].miss, cpi: cpi });
     }
 }
 
@@ -190,19 +301,6 @@ function calculateTagIndex(address) {
         tag: tag ? tag : 0,
         index: index,
     };
-}
-
-/**
- * Calculate the address from the tag and index.
- *
- * @param tag Tag of the address
- * @param index Index of the address
- * @returns {number}
- */
-function tagIndexToAddress(tag, index) {
-    const { offsetBits, indexBits } = cacheOptions;
-
-    return (tag << (offsetBits + indexBits)) | (index << offsetBits);
 }
 
 class CacheElement {

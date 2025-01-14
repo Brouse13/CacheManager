@@ -17,6 +17,8 @@ function cacheRender(index, options) {
     let cache = $(`#cache${index} table`);
     let size = Math.pow(2, options.indexBits);
 
+    if (cacheOptions.associativity === "N-WAY") size *= cacheOptions.n_way;
+
     for (let i = 0; i < size; i++) {
         cache.append(`<tr class="text-center">
                         <td>F</td>

@@ -42,6 +42,8 @@ function memoryItemRender(address, value, classToAdd) {
  */
 function renderHit(index, hit) {
     let memoryAccess = $(`#memoryAccess tbody tr:nth-child(${index + 1})`);
-    memoryAccess.find('td:nth-child(3)').text(hit.data);
+    let data = typeof hit.data === "object" ? hit.data.data : hit.data
+
+    memoryAccess.find('td:nth-child(3)').text(data);
     memoryAccess.find('td:nth-child(4)').text(!hit.hit ? 'Miss' : `Hit - ${hit.num + 1}`);
 }

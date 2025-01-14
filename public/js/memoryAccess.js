@@ -48,8 +48,11 @@ function nextStep() {
 
 function __initMemoryAccess() {
     memoryAccessArr = [
-        new MemoryAccess("R", 0x000, '-'),
+        new MemoryAccess("R", 0x7FF, '-'),
+        new MemoryAccess("R", 0x7FF+1024, '-'),
+        new MemoryAccess("R", 2048, '-'),
         new MemoryAccess("R", 0x810, '-'),
+        new MemoryAccess("R", 0, '-'),
         new MemoryAccess("R", 324, '-'),
         new MemoryAccess("R", 325, '-'),
         new MemoryAccess("W", 326, 89),
