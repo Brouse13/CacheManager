@@ -177,15 +177,45 @@ $(document).ready(function () {
     $('#playpause').click(playPause);
     $('#next').click(nextStep);
 
+    let params = getUrlParameters(window.location.href)
     // Reset the progress bar
     __initMemoryAccess();
     updateProgressBar(currentMemoryAccess, memoryAccessArr.length);
     __initMemory();
-    __initCache();
+    __initCache(params);
 
     // Set the caches to the default values
     for (let i = 0; i < cacheOptions.cacheNumber; i++) updateCacheStats(i);
 });
+
+/**
+ * Get all the params from the url as a map.
+ *
+ * @param url url of the page normally {@linkcode window.location.href}
+ * @returns {Map<any, any>}
+ */
+function getUrlParameters(url) {
+    const params = new Map();
+
+    // Extract the query string (everything after the '?')
+    const queryString = url.split('?')[1];
+
+    // Return an empty map if no query parameters
+    if (!queryString) return params;
+
+    // Split the query string into individual key-value pairs
+    const pairs = queryString.split('&');
+    for (const pair of pairs) {
+        const [key, value] = pair.split('=');
+        params.set(decodeURIComponent(key), decodeURIComponent(value || ''));
+    }
+
+    return params;
+}
+
+function encodeValue() {
+
+}
 
 class MemoryAccess {
     constructor(rw, address, value) {

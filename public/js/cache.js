@@ -4,7 +4,7 @@
     indexBits: 5,
     offsetBits: 5,
     replacementPolicy: 'LRU',
-    associativity: '',
+    associativity: 'DIRECT_MAP',
     n_way: 2
 }
 
@@ -13,9 +13,20 @@ let caches = [];
 /**
  * Initialize the cache array.
  *
+ * @params map containing all the urls params
  * @private
  */
-function __initCache() {
+function __initCache(params) {
+    cacheOptions = {
+        cacheNumber: 3,
+        dirty: false,
+        indexBits: params.get("indexBits") ? parseInt(params.get("indexBits")) : 5,
+        offsetBits: params.get("offsetBits") ? parseInt(params.get("offsetBits")) : 5,
+        replacementPolicy: params.get("replacementPolicy") ? params.get("replacementPolicy") : 'LRU',
+        associativity: params.get("associativity") ? params.get("associativity") : 'DIRECT_MAP',
+        n_way: params.get("n-way") ? parseInt(params.get("n-way")) : 2
+    }
+
     for (let i = 0; i < cacheOptions.cacheNumber; i++) {
         if (cacheOptions.associativity === "FULLY_ASSOCIATIVE") {
             caches.push([]);
