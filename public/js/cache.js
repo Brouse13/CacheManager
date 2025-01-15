@@ -4,7 +4,7 @@
     indexBits: 5,
     offsetBits: 5,
     replacementPolicy: 'LRU',
-    associativity: 'N-WAY',
+    associativity: '',
     n_way: 2
 }
 
@@ -17,7 +17,11 @@ let caches = [];
  */
 function __initCache() {
     for (let i = 0; i < cacheOptions.cacheNumber; i++) {
-        caches.push({});
+        if (cacheOptions.associativity === "FULLY_ASSOCIATIVE") {
+            caches.push([]);
+        }else {
+            caches.push({});
+        }
         cacheRender(i+1, cacheOptions);
     }
 }
@@ -67,12 +71,14 @@ function readFromCache(address) {
             case "FULLY_ASSOCIATIVE":
                 // On a FULLY_ASSOCIATIVE the value can be stored in any position of
                 // the cache so we have to loop it
-                if (!cache) break
+                if (!cache) continue;
+
                 let j = -1;
-                for (const [index, element] in Object.entries(cache)) {
-                    j++
+                for (const elementIndex in cache) {
+                    let element = cache[elementIndex];
+                    j++;
                     // Different index, continue
-                    if (parseInt(index) !== index) continue;
+                    if (element.index !== index || element.tag !== tag) continue;
 
                     return { data: element, hit: true, num: cacheIndex, renderIndex: j };
                 }
@@ -133,11 +139,12 @@ function __writeToCache(address, data) {
         case "FULLY_ASSOCIATIVE":
             let j = -1
             if (!caches[num]) break
-            for (let [key, element] in Object.entries(caches[num])) {
+            for (const elementIndex in caches[num]) {
+                let element = caches[num][elementIndex]
                 j++
-                if (element.tag !== tag) continue
+                if (element.index !== index || element.tag !== tag) continue;
 
-                element = new CacheElement(tag, true, true, data)
+                element.data = data
                 dataRender = element
                 indexRender = j
             }
@@ -242,11 +249,13 @@ function pushDataToCache(address, data) {
                 if (cache.length < maxSize) {
                     // Cache has space
                     renderData = new CacheElement(tag, true, dirty, data)
-                    renderIndex = cache.push(renderData)
+                    renderData.index = index
+                    renderIndex = cache.push(renderData) - 1
                 }else {
                     // Cache hasn't got space, replace first (has to be LRU)
                     tmp = cache[0]
                     cache[0] = new CacheElement(tag, true, dirty, data)
+                    cache[0].index = index
 
                     renderIndex = 0;
                     renderData = cache[0]
@@ -270,6 +279,13 @@ function pushDataToCache(address, data) {
         data = tmp.data;
         tag = tmp.tag;
         dirty = tmp.dirty;
+
+        // Hardcoded, with this only if we ar on FULLY_ASSOCIATIVE if the level is not
+        // full it won't go to the next one
+        if(cacheOptions.associativity === "FULLY_ASSOCIATIVE") {
+            let maxLength = Math.pow(2, cacheOptions.indexBits)
+            if (cache.length < maxLength) cacheIndex--
+        }
     }
 
     // Write the data to memory if it's dirty
@@ -301,6 +317,15 @@ function calculateTagIndex(address) {
         tag: tag ? tag : 0,
         index: index,
     };
+}
+
+function objectLength(object) {
+    let length = 0;
+
+    for(let key in object) {
+        if(object.hasOwnProperty(key)) ++length;
+    }
+    return length;
 }
 
 class CacheElement {
