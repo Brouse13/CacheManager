@@ -1,10 +1,10 @@
 ﻿memory = {}
 
 let memoryOptions = {
-    startAddress: 0,        // The start address of the memory
-    memorySize: 1_048_576,  // The size of the memory in bytes
-    maxValue: 128,          // The max value of the memory
-    memoryWord: 32          // The size of the memory word
+    startAddress: Storage.getIntValue("startAddress", 0),      // Start address of the memory
+    memorySize: Storage.getIntValue("memorySize", 1_048_576),  // The size of the memory in bytes
+    maxValue: Storage.getIntValue("maxValue", 128),            // The max value of the memory
+    memoryWord: Storage.getIntValue("memoryWord", 32)          // The size of the memory word
 }
 
 function __initMemory() {

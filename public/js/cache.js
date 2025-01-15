@@ -1,11 +1,11 @@
 ﻿let cacheOptions = {
-    cacheNumber: 3,
-    dirty: false,
-    indexBits: 5,
-    offsetBits: 5,
-    replacementPolicy: 'LRU',
-    associativity: 'DIRECT_MAP',
-    n_way: 2
+    cacheNumber: Storage.getIntValue("cacheNumber", 3),
+    dirty: Storage.getBoolValue("dirty", false),
+    indexBits: Storage.getIntValue("indexBits", 5),
+    offsetBits: Storage.getIntValue("offsetBits", 5),
+    replacementPolicy: Storage.getStringValue("replacementPolicy", 'LRU'),
+    associativity: Storage.getStringValue("associativity", 'DIRECT_MAP'),
+    n_way: Storage.getIntValue("n_way", 2)
 }
 
 let caches = [];
@@ -16,17 +16,7 @@ let caches = [];
  * @params map containing all the urls params
  * @private
  */
-function __initCache(params) {
-    cacheOptions = {
-        cacheNumber: 3,
-        dirty: false,
-        indexBits: params.get("indexBits") ? parseInt(params.get("indexBits")) : 5,
-        offsetBits: params.get("offsetBits") ? parseInt(params.get("offsetBits")) : 5,
-        replacementPolicy: params.get("replacementPolicy") ? params.get("replacementPolicy") : 'LRU',
-        associativity: params.get("associativity") ? params.get("associativity") : 'DIRECT_MAP',
-        n_way: params.get("n-way") ? parseInt(params.get("n-way")) : 2
-    }
-
+function __initCache() {
     for (let i = 0; i < cacheOptions.cacheNumber; i++) {
         if (cacheOptions.associativity === "FULLY_ASSOCIATIVE") {
             caches.push([]);

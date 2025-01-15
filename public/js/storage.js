@@ -19,32 +19,36 @@ class Storage {
      * Get the stored value on the localstorage
      *
      * @param key key to search
-     * @return the found string value on the storage, otherwise, null
+     * @param defVal default value to return
+     * @return the found string value on the storage, otherwise, defVal or null
      */
-    static getStringValue(key) {
-        return localStorage.getItem(key);
+    static getStringValue(key, defVal) {
+        let val = localStorage.getItem(key);
+        return val == null ? defVal : val;
     }
 
     /**
      * Get the stored value on the localstorage and parse it to an int
      *
      * @param key key to search
-     * @return the found int value on the storage, otherwise, undefined
+     * @param defVal default value to return
+     * @return the found int value on the storage, otherwise, defVal or undefined
      */
-    static getIntValue(key) {
+    static getIntValue(key, defVal) {
         let val = Storage.getStringValue(key);
-        return val === null ? undefined : parseInt(val);
+        return val == null ? defVal : parseInt(val);
     }
 
     /**
      * Get the stored value on the localstorage and parse it to an int
      *
      * @param key key to search
-     * @return the found boolean value on the storage, otherwise, undefined
+     * @param defVal default value to return
+     * @return the found boolean value on the storage, otherwise, defVal or undefined
      */
-    static getBoolValue(key) {
+    static getBoolValue(key, defVal) {
         let val = Storage.getStringValue(key);
-        return val === null ? undefined : Boolean(val);
+        return val == null ? defVal : Boolean(val);
     }
 
     /**
