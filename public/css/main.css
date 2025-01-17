@@ -46,6 +46,10 @@ body {
     padding-left: 0!important;
 }
 
+.modal-header, .modal-body {
+    color: var(--page-secondary);
+}
+
 :root {
     --page-primary: #C0D7BB;
     --page-secondary: #3E885B;

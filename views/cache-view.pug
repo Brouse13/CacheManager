@@ -1,25 +1,28 @@
-﻿mixin openmodal(name)
+﻿mixin openmodal(name, id)
     button.openmodal.dropdown-item(type="button", data-bs-toggle="modal",
-        data-bs-target="#changeVars", modal-data=name)= name
+        data-bs-target="#changeVars", modal-data=id)= name
 
 form.cache-options
     .dropdown
         button.btn.dropdown-toggle(type="button", id="memoryOptions",
             data-bs-toggle="dropdown", aria-expanded="false")= `${lang['options']['memory']['title']}`
         .dropdown-menu(aria-labelledby="memoryOptions")
-            a.dropdown-item(href="#") Memory Size
-            +openmodal("Memory Start Address")
+            +openmodal("Memory Start Address", "startAddress")
+            +openmodal("Memory Size", "memorySize")
+            +openmodal("Memory Max Value", "maxValue")
+            +openmodal("Memory Word Size", "memoryWord")
 
     .dropdown.dropdown-hover
         button.btn.dropdown-toggle(type="button", id="cacheOptions",
             data-bs-toggle="dropdown", aria-expanded="false")= `${lang['options']['cache']['title']}`
         .dropdown-menu(aria-labelledby="cacheOptions")
-            +openmodal("Cache number")
-            +openmodal("Cache size")
-            +openmodal("Dirty bit")
-            +openmodal("Valid bit")
-            +openmodal("Replacement Policy")
-            +openmodal("Change Variable Settings")
+            +openmodal("Cache number", "cacheNumber")
+            +openmodal("Dirty bit", "dirty")
+            +openmodal("Index bits", "indexBits")
+            +openmodal("Offset bits", "offsetBits")
+            +openmodal("Replacement Policy", "replacementPolicy")
+            +openmodal("Cache associativity", "associativity")
+            +openmodal("N-way associativity", "n_way")
 
 .cache-view
     .col-md.memory-container.overflow-hidden

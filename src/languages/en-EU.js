@@ -27,7 +27,7 @@
     },
     'options': {
         'memory': {
-            'title': "Cache options",
+            'title': "Memory options",
         },
         'cache': {
             'title': "Cache options",

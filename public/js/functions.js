@@ -1,16 +1,26 @@
 ﻿$(document).ready(function () {
     // ---- Modal functions -----
     $('.openmodal').click(function () {
-        let value = $(this).attr('modal-data');
+        let attrib = $(this).attr('modal-data');
+        let value = $(this).text();
 
         $('#modalTitle').text("Change " + value);
         $('#labelModalForm').text(value);
-        $('#modalType').val(value);
+        $('#modalType').val(attrib);
     })
 
     $('#saveFormButton').click(function () {
         let value = $('#modalInput').val();
-        if (value) $('#modalForm').submit();
+        if (value) {
+            // Store the value
+            Storage.storeValue(
+                $('#modalType').val(),
+                $('#modalInput').val()
+            )
+
+            // Simulate the button send
+            window.location.reload()
+        }
     })
 
     // ---- View Value functions -----

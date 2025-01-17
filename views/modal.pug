@@ -5,10 +5,9 @@
                 h5.modal-title(id="modalTitle") Change Variable Settings
                 button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
             .modal-body
-                form(id="modalForm", method="get", action="/")
-                    .mt-3
-                        input(id="modalType", type="hidden", name="modalType", value="")
-                        label(for="modalInput", id="labelModalForm") Cache Number
-                        input.form-control(type="text", id="modalInput", name="modalInput" required)
+                .mt-3
+                    input(id="modalType", type="hidden", name="modalType", value="")
+                    label(for="modalInput", id="labelModalForm") Cache Number
+                    input.form-control(type="text", id="modalInput", name="modalInput" required)
             .modal-footer
-                button.btn.btn-primary(type="submit", id="saveFormButton") Save
+                button.btn.btn-primary(type="button", id="saveFormButton") Save
